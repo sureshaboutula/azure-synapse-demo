@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "-- create database\nCREATE DATABASE salesdb\n\n--password encyption\nCREATE MASTER KEY ENCRYPTION BY PASSWORD = 'Xyz@123synapse';\n\n--create sasToken\nCREATE DATABASE SCOPED CREDENTIAL SasToken\nWITH IDENTITY = 'SHARED ACCESS SIGNATURE',\nSECRET = 'sv=2024-11-04&ss=b&srt=sco&sp=rwdlacyx&se=2025-07-10T09:19:34Z&st=2025-07-04T01:19:34Z&spr=https&sig=Th4CjWDxlzWDsgs96TBQ%2B1Nlptom5HqOH2BqONs0%2BEI%3D';\n\n-- Create an external data source\nCREATE EXTERNAL DATA SOURCE ExtDataSrc\nWITH (LOCATION = 'https://sasynapsedemodl.dfs.core.windows.net/raw/',\nCREDENTIAL = SasToken);\n\n-- create a file format\nCREATE EXTERNAL FILE FORMAT TextFileFormat WITH (\n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS (\n        FIELD_TERMINATOR = ',',\n        FIRST_ROW = 2\n    )\n)\n\n-- create external table\nCREATE EXTERNAL TABLE orders(\n    order_id BIGINT,\n    order_date NVARCHAR(4000),\n    customer_id BIGINT,\n    order_status NVARCHAR(4000)\n)\nWITH(\n    LOCATION = 'orders.csv',\n    DATA_SOURCE = ExtDataSrc,\n    FILE_FORMAT = TextFileFormat\n)\nGO\n\n-- query the data\nSELECT * FROM orders\n\nSELECT order_status, COUNT(*) FROM orders GROUP BY order_status;\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "salesdb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
