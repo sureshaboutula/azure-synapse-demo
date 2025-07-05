@@ -1,0 +1,17 @@
+{
+	"name": "create external table",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t FIRST_ROW = 2,\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'raw_sasynapsedemodl_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [raw_sasynapsedemodl_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://raw@sasynapsedemodl.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\nCREATE EXTERNAL TABLE dbo.orders_ext (\n\t[order_id] bigint,\n\t[order_date] NVARCHAR(4000),\n\t[order_customer_id] bigint,\n\t[order_status] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'orders.csv',\n\tDATA_SOURCE = [raw_sasynapsedemodl_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.orders_ext\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "retaildb",
+				"poolName": "retaildb"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

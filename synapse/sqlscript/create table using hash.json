@@ -1,0 +1,17 @@
+{
+	"name": "create table using hash",
+	"properties": {
+		"content": {
+			"query": "/* CREATE TABLE orders_internal_hash\nWITH(\n    DISTRIBUTION = HASH(order_customer_id)\n)\nAS\nSELECT * FROM orders_ext */\n\n-- SELECT * FROM orders_internal_hash\n\n-- DBCC PDW_SHOWSPACEUSED ('orders_internal_hash')\n\nSELECT order_customer_id, COUNT(*) as total_orders FROM orders_internal_hash GROUP BY \norder_customer_id ORDER BY total_orders DESC",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "retaildb",
+				"poolName": "retaildb"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

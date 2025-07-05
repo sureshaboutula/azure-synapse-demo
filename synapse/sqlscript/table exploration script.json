@@ -1,0 +1,17 @@
+{
+	"name": "table exploration script",
+	"properties": {
+		"content": {
+			"query": "/* CREATE TABLE orders_internal_roundrobin\nWITH(\n    DISTRIBUTION = ROUND_ROBIN\n)\nAS\nSELECT * FROM orders_ext */\n\n--SELECT * FROM orders_internal_roundrobin\n\nSELECT order_customer_id, COUNT(*) as total_orders FROM orders_internal_roundrobin GROUP BY \norder_customer_id ORDER BY total_orders DESC\n\n--DBCC PDW_SHOWSPACEUSED('orders_internal_roundrobin')",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "retaildb",
+				"poolName": "retaildb"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
