@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "drop EXTERNAL TABLE orders\n\nDROP EXTERNAL DATA SOURCE ExtDataSrc\n\nDROP EXTERNAL FILE FORMAT TextFileFormat",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "salesdb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
