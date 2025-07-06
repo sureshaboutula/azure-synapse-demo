@@ -1,0 +1,67 @@
+{
+	"name": "Notebook 1",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "mysparkpool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "6b625812-4086-40a4-8bcd-67d49ec2aa47"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/75392811-868a-4afd-9b95-40b4e81b5c5c/resourceGroups/azure-synapse-rg/providers/Microsoft.Synapse/workspaces/azuresynapsedemo-ws/bigDataPools/mysparkpool",
+				"name": "mysparkpool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				}
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					}
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"df = spark.read.load('abfss://raw@sasynapsedemodl.dfs.core.windows.net/orders.csv', format='csv'\r\n",
+					", header=True\r\n",
+					")\r\n",
+					"display(df.limit(10))\r\n",
+					"\r\n",
+					"# new_df = df.where('order_id < 6')\r\n",
+					"# display(new_df)\r\n",
+					"\r\n",
+					"df.write.mode('overwrite').saveAsTable(\"orders_spark_new\")"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
